@@ -79,3 +79,13 @@ npm run dev
 ```
 
 4. Webhooks en local: `stripe listen --forward-to localhost:3000/api/stripe/webhook`. Magic links en [http://localhost:8025](http://localhost:8025).
+
+<!-- BEGIN cc:que-se-valora -->
+¡Hola! Aquí te explico qué es lo que miramos con lupa cuando corregimos tu proyecto "Lottery".
+
+## 📋 Qué se valora
+
+En tu proyecto, lo que más pesa es que todo funcione como se espera y que hayas cumplido con cada punto del enunciado. También es importante que tu código esté bien organizado y sea fácil de entender, eso tiene un peso importante. Tu vídeo demo también tiene un peso importante, así que asegúrate de que muestre bien tu trabajo. Finalmente, aunque con un peso menor, nos fijamos en cómo has documentado tus decisiones y el porqué de algunas elecciones que hayas hecho.
+
+Recuerda que el enunciado es la guía principal y la evaluación no te penalizará por cosas que no se pidan explícitamente en él.
+<!-- END cc:que-se-valora -->

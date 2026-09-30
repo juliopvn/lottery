@@ -1,0 +1,68 @@
+name: Deploy
+
+# Se dispara cuando CI termina en éxito. El CI decide: como no hay checks
+# obligatorios en GitHub (ver ci.yml), Vercel no debe desplegar por su cuenta
+# (vercel.json tiene "deploymentEnabled": false).
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+jobs:
+  deploy:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      IS_PROD: ${{ github.event.workflow_run.head_branch == 'main' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm install --global vercel@latest
+
+      - name: Pull entorno de Vercel
+        run: |
+          if [ "$IS_PROD" = "true" ]; then
+            vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          else
+            vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build con Vercel CLI
+        run: |
+          if [ "$IS_PROD" = "true" ]; then
+            vercel build --prod --token="$VERCEL_TOKEN"
+          else
+            vercel build --token="$VERCEL_TOKEN"
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy prebuilt
+        run: |
+          if [ "$IS_PROD" = "true" ]; then
+            vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+          else
+            vercel deploy --prebuilt --token="$VERCEL_TOKEN"
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Smoke test de producción (/api/health)
+        if: env.IS_PROD == 'true'
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" https://lottery.jpavon-tech.com/api/health)
+          echo "status: $status"
+          if [ "$status" != "200" ]; then
+            echo "El health check no respondió 200"
+            exit 1
+          fi

@@ -1,0 +1,25 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: lottery-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - lottery-mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: lottery-mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI + API
+
+volumes:
+  lottery-mongo-data:

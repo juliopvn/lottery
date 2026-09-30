@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #0e1024;
+  --color-bg-soft: #12142c;
+  --color-surface: #171a3d;
+  --color-surface-2: #1f2350;
+  --color-border: rgba(245, 243, 238, 0.12);
+  --color-border-strong: rgba(245, 243, 238, 0.24);
+  --color-gold: #f2b705;
+  --color-gold-soft: #ffd75e;
+  --color-gold-ink: #2c2000;
+  --color-coral: #ff5d5d;
+  --color-mint: #33d69f;
+  --color-ink: #f5f3ee;
+  --color-muted: #9599c2;
+  --color-muted-soft: #6a6e9c;
+
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-bg-soft: var(--color-bg-soft);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+  --color-gold: var(--color-gold);
+  --color-gold-soft: var(--color-gold-soft);
+  --color-gold-ink: var(--color-gold-ink);
+  --color-coral: var(--color-coral);
+  --color-mint: var(--color-mint);
+  --color-ink: var(--color-ink);
+  --color-muted: var(--color-muted);
+  --color-muted-soft: var(--color-muted-soft);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-gold-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Ticket "stub": borde perforado que evoca un boleto físico cortado. */
+.ticket-stub {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+}
+
+.ticket-stub::before,
+.ticket-stub::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--color-bg);
+  border-radius: 9999px;
+  transform: translateY(-50%);
+}
+
+.ticket-stub::before {
+  left: -0.625rem;
+}
+
+.ticket-stub::after {
+  right: -0.625rem;
+}
+
+.ticket-perforation {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-border-strong) 0,
+    var(--color-border-strong) 6px,
+    transparent 6px,
+    transparent 14px
+  );
+  width: 1px;
+}
+
+/* Bola de sorteo: usada en el selector de números y en el anuncio de ganador. */
+.lottery-ball {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  transition: transform 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+
+@keyframes ball-drop {
+  0% {
+    transform: translateY(-24px) scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(4px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.winner-ball-drop {
+  animation: ball-drop 500ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}

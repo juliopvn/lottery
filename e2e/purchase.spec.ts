@@ -15,8 +15,9 @@ test("compra feliz: elige número, paga (simulado) y aparece en Mis boletos", as
   await loginViaMagicLink(page, "e2e-user@example.com");
   const buyer = await whoami(page.request);
 
+  const lotteryName = `Rifa Compra E2E ${Date.now()}`;
   const lotteryId = await createTestLottery(baseURL!, {
-    name: `Rifa Compra E2E ${Date.now()}`,
+    name: lotteryName,
     closesInSeconds: 3600,
     totalNumbers: 20,
   });
@@ -44,7 +45,10 @@ test("compra feliz: elige número, paga (simulado) y aparece en Mis boletos", as
   await expect(page.getByText(/pago confirmado/i)).toBeVisible({ timeout: 15_000 });
 
   await page.goto("/my-tickets");
-  await expect(page.getByText(String(number))).toBeVisible();
+  // Acotado a la tarjeta de ESTA lotería: el número suelto podría coincidir
+  // por substring con el timestamp del nombre de otras loterías de prueba.
+  const ticketCard = page.locator(".ticket-stub", { hasText: lotteryName });
+  await expect(ticketCard.getByText(String(number), { exact: true })).toBeVisible();
 
   await page.goto(`/lotteries/${lotteryId}`);
   await expect(page.getByRole("button", { name: String(number), exact: true })).toBeDisabled();

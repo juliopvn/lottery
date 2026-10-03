@@ -80,6 +80,16 @@ npm run dev
 
 4. Webhooks en local: `stripe listen --forward-to localhost:3000/api/stripe/webhook`. Magic links en [http://localhost:8025](http://localhost:8025).
 
+## 🌐 Despliegue público
+
+[![CI](https://github.com/juliopvn/lottery/actions/workflows/ci.yml/badge.svg)](https://github.com/juliopvn/lottery/actions/workflows/ci.yml)
+
+**URL**: [https://lottery.jpavon-tech.com](https://lottery.jpavon-tech.com)
+
+> ⚠️ Los pagos están siempre en **modo de prueba de Stripe** (MXN); no se cobra dinero real. Usa la tarjeta de prueba `4242 4242 4242 4242`, con cualquier fecha de expiración futura y cualquier CVC.
+
+El código fuente vive en GitLab y se replica por *push mirroring* a GitHub, donde GitHub Actions ejecuta el pipeline de CI/CD (`ci.yml` → `deploy.yml`) y despliega automáticamente a Vercel.
+
 <!-- BEGIN cc:que-se-valora -->
 ¡Hola! Aquí te explico qué es lo que miramos con lupa cuando corregimos tu proyecto "Lottery".
 

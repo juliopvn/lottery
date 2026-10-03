@@ -90,6 +90,15 @@ npm run dev
 
 El código fuente vive en GitLab y se replica por *push mirroring* a GitHub, donde GitHub Actions ejecuta el pipeline de CI/CD (`ci.yml` → `deploy.yml`) y despliega automáticamente a Vercel.
 
+**Servicios en producción**
+
+| Servicio | Rol |
+|---|---|
+| **Vercel** | Hosting de la app Next.js; recibe el deploy desde GitHub Actions (el auto-deploy nativo de Vercel está desactivado a propósito, ver `vercel.json`). |
+| **MongoDB Atlas** | Base de datos en la nube (`lottery` en producción, `lottery_preview` para previews), con un usuario de acceso dedicado de solo esas dos bases. |
+| **Cloudflare** | DNS del dominio `jpavon-tech.com`: el CNAME de `lottery` apunta a Vercel y los registros de verificación de `mail.jpavon-tech.com` apuntan a Resend, ambos en modo *DNS only* (sin proxy). |
+| **Resend** | Envío de los correos con el magic link de acceso, desde el subdominio verificado `mail.jpavon-tech.com`. |
+
 <!-- BEGIN cc:que-se-valora -->
 ¡Hola! Aquí te explico qué es lo que miramos con lupa cuando corregimos tu proyecto "Lottery".
 

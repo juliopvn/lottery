@@ -3,6 +3,7 @@ import { listLotteries, lazyCloseIfPastCutoff } from "@/lib/db/repositories/lott
 import { countTicketsForLottery } from "@/lib/db/repositories/tickets";
 import { serializeLottery, type SerializedLottery } from "@/lib/api/serialize";
 import { formatCents } from "@/lib/domain/money";
+import { formatDateTimeMX } from "@/lib/format/datetime";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Countdown } from "@/components/ui/Countdown";
 
@@ -54,7 +55,7 @@ function LotteryCard({ lottery }: { lottery: SerializedLottery }) {
             {lottery.status === "open" ? (
               <Countdown targetIso={lottery.saleClosesAt} />
             ) : (
-              new Date(lottery.closesAt).toLocaleString("es-MX")
+              formatDateTimeMX(new Date(lottery.closesAt))
             )}
           </dd>
         </div>

@@ -6,6 +6,7 @@ import { findUserById } from "@/lib/db/repositories/users";
 import { serializeLottery, serializeTicket } from "@/lib/api/serialize";
 import { canDraw } from "@/lib/domain/lottery";
 import { formatCents } from "@/lib/domain/money";
+import { formatDateTimeMX } from "@/lib/format/datetime";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { DrawButton } from "@/components/admin/DrawButton";
 
@@ -54,7 +55,7 @@ export default async function AdminLotteryDetailPage({
           <p className="mt-2 font-mono text-sm text-muted">
             Boleto {formatCents(serialized.ticketPriceCents)} · Premio{" "}
             <span className="text-gold">{formatCents(serialized.prizeCents)}</span> · Sorteo{" "}
-            {new Date(serialized.closesAt).toLocaleString("es-MX")}
+            {formatDateTimeMX(new Date(serialized.closesAt))}
           </p>
         </div>
         <StatusBadge status={serialized.status} />
@@ -131,7 +132,7 @@ export default async function AdminLotteryDetailPage({
                         {buyersById.get(ticket.userId.toString()) ?? "—"}
                       </td>
                       <td className="px-4 py-3 font-mono text-muted">
-                        {new Date(serializedTicket.paidAt).toLocaleString("es-MX")}
+                        {formatDateTimeMX(new Date(serializedTicket.paidAt))}
                       </td>
                     </tr>
                   );

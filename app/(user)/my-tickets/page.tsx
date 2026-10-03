@@ -5,6 +5,7 @@ import { listTicketsByUser } from "@/lib/db/repositories/tickets";
 import { findLotteryById } from "@/lib/db/repositories/lotteries";
 import { serializeLottery, serializeTicket, type SerializedLottery } from "@/lib/api/serialize";
 import { formatCents } from "@/lib/domain/money";
+import { formatDateMX } from "@/lib/format/datetime";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 
 export const dynamic = "force-dynamic";
@@ -60,7 +61,7 @@ export default async function MyTicketsPage() {
                   {lottery?.name ?? "Lotería"}
                 </p>
                 <p className="mt-1 font-mono text-xs text-muted">
-                  Pagado el {new Date(ticket.paidAt).toLocaleDateString("es-MX")}
+                  Pagado el {formatDateMX(new Date(ticket.paidAt))}
                   {lottery ? ` · ${formatCents(lottery.ticketPriceCents)}` : ""}
                 </p>
                 {isWinner && <p className="mt-1 text-sm font-semibold text-gold">¡Eres el ganador!</p>}

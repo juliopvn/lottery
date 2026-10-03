@@ -5,6 +5,7 @@ import { countTicketsForLottery, soldNumbersForLottery } from "@/lib/db/reposito
 import { serializeLottery } from "@/lib/api/serialize";
 import { canBuy as canBuyDomain } from "@/lib/domain/lottery";
 import { formatCents } from "@/lib/domain/money";
+import { formatDateTimeMX } from "@/lib/format/datetime";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { NumberGrid } from "@/components/lottery/NumberGrid";
 
@@ -67,7 +68,7 @@ export default async function LotteryDetailPage({
                   {serialized.winnerNumber}
                 </span>
                 <p className="max-w-sm text-sm text-muted">
-                  Sorteado el {new Date(serialized.drawnAt ?? serialized.closesAt).toLocaleString("es-MX")}.
+                  Sorteado el {formatDateTimeMX(new Date(serialized.drawnAt ?? serialized.closesAt))}.
                   Si este es tu número, revisa{" "}
                   <a href="/my-tickets" className="text-gold underline">
                     Mis boletos
@@ -87,7 +88,7 @@ export default async function LotteryDetailPage({
           <div className="ticket-stub px-8 py-10 text-center">
             <p className="text-sm text-muted">
               La venta ya cerró. El sorteo se realiza a partir del{" "}
-              {new Date(serialized.closesAt).toLocaleString("es-MX")}.
+              {formatDateTimeMX(new Date(serialized.closesAt))}.
             </p>
           </div>
         )}
